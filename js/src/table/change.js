@@ -330,6 +330,17 @@ function verificationsAfterFieldChange (urlField, multiEdit, theType) {
         $('#salt_' + target.id).remove();
     }
 
+    // Clear out previous rules added before adding new ones
+    $thisInput.rules('remove');
+
+    // Remove any error messages
+    $thisInput
+        .removeClass('error')
+        .removeAttr('aria-invalid')
+        .siblings('.error')
+        .remove();
+    $thisInput.data('rulesadded', null);
+
     // Remove possible blocking rules if the user changed functions
     $('#' + target.id).rules('remove', 'validationFunctionForMd5');
     $('#' + target.id).rules('remove', 'validationFunctionForAesDesEncrypt');
@@ -431,7 +442,7 @@ function verificationsAfterFieldChange (urlField, multiEdit, theType) {
             });
         }
         $thisInput.data('rulesadded', true);
-    } else if ($thisInput.data('rulesadded') === true && functionSelected) {
+    } else if ($thisInput.data('rulesadded') === true) {
         // remove any rules added
         $thisInput.rules('remove');
         // remove any error messages
