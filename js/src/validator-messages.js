@@ -20,6 +20,7 @@ function extendingValidatorMessages () {
         min: $.validator.format(window.Messages.strValidatorMin),
         validationFunctionForDateTime: $.validator.format(window.Messages.strValidationFunctionForDateTime),
         validationFunctionForHex: $.validator.format(window.Messages.strValidationFunctionForHex),
+        validationFunctionForNumeric: $.validator.format(window.Messages.strValidationFunctionForNumeric),
         validationFunctionForMd5: $.validator.format(window.Messages.strValidationFunctionForMd5),
         validationFunctionForAesDesEncrypt: $.validator.format(window.Messages.strValidationFunctionForAesDesEncrypt),
     });

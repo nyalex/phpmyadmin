@@ -342,6 +342,7 @@ function verificationsAfterFieldChange (urlField, multiEdit, theType) {
     $thisInput.data('rulesadded', null);
 
     // Remove possible blocking rules if the user changed functions
+    $('#' + target.id).rules('remove', 'validationFunctionForNumeric');
     $('#' + target.id).rules('remove', 'validationFunctionForMd5');
     $('#' + target.id).rules('remove', 'validationFunctionForAesDesEncrypt');
 
@@ -401,6 +402,7 @@ function verificationsAfterFieldChange (urlField, multiEdit, theType) {
         // call validate before adding rules
         $($thisInput[0].form).validate();
         // validate for date time
+
         if (theType === 'datetime' || theType === 'time' || theType === 'date' || theType === 'timestamp') {
             $thisInput.rules('add', {
                 validationFunctionForDateTime: {
@@ -411,11 +413,18 @@ function verificationsAfterFieldChange (urlField, multiEdit, theType) {
                 }
             });
         }
-        // validation for integer type
-        if ($thisInput.data('type') === 'INT') {
-            validateIntField($thisInput, checkForCheckbox(multiEdit));
-            // validation for CHAR types
-        } else if ($thisInput.data('type') === 'CHAR') {
+        if (theType.startsWith('float') || theType.startsWith('decimal') || theType.startsWith('int')) {
+            $thisInput.rules('add', {
+                validationFunctionForNumeric: {
+                    param: theType,
+                    depends: function () {
+                        return checkForCheckbox(multiEdit);
+                    }
+                }
+            });
+        }
+        
+        if ($thisInput.data('type') === 'CHAR') {
             var maxlen = $thisInput.data('maxlength');
             if (typeof maxlen !== 'undefined') {
                 if (maxlen <= 4) {
@@ -479,10 +488,18 @@ AJAX.registerTeardown('table/change.js', function () {
  */
 AJAX.registerOnload('table/change.js', function () {
     if ($('#insertForm').length) {
+
+
+        // Custom validation rules:
+        // --------
         // validate the comment form when it is submitted
         $('#insertForm').validate();
         $.validator.addMethod('validationFunctionForHex', function (value) {
             return value.match(/^[a-f0-9]*$/i) !== null;
+        });
+
+        $.validator.addMethod('validationFunctionForNumeric', function (value) {
+            return !isNaN(value);
         });
 
         $.validator.addMethod('validationFunctionForMd5', function (value, element, options) {

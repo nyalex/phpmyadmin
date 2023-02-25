@@ -851,6 +851,7 @@ final class JavaScriptMessagesController
             'strValidationFunctionForDateTime' => __('Please enter a valid date or time'),
             'strValidationFunctionForHex' => __('Please enter a valid HEX input'),
             /* l10n: To validate the usage of a MD5 function on the column */
+            'strValidationFunctionForNumeric' => __('Please enter a valid number'),
             'strValidationFunctionForMd5' => __('This column can not contain a 32 chars value'),
             /* l10n: To validate the usage of an AES_ENCRYPT/DES_ENCRYPT function on the column */
             'strValidationFunctionForAesDesEncrypt' => __(
